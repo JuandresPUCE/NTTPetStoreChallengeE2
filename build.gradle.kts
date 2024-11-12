@@ -19,5 +19,16 @@ dependencies {
 }
 
 tasks.test {
-    useJUnitPlatform()
+    useJUnitPlatform()  // Habilita JUnit Platform para Karate
+    systemProperty("karate.env", findProperty("env") ?: "dev")  // Define karate.env a partir de la propiedad "env" o usa "dev" por defecto
 }
+
+
+sourceSets {
+    getByName("test") {
+        resources {
+            setSrcDirs(listOf("src/test/resources"))
+        }
+    }
+}
+

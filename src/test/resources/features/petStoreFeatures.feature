@@ -2,11 +2,12 @@
 Feature: Petstore API Tests
 
   Background:
-    * def urlBase = 'https://petstore.swagger.io/v2'
-    * def usersPath = '/pet'
+    * def config = call read('classpath:karate-config.js')
+    * def urlBase = config.urlBase
+    * def usersPath = config.usersPath
 
   @addPet  # Tag para el escenario de añadir una mascota
-  Scenario Outline: Añadir una mascota a la tienda
+  Scenario Outline: Agregar una mascota a la tienda
     # Dada la url urlBase + usersPath
     Given url urlBase + usersPath
     # encabezados de la petición de la API
@@ -55,7 +56,7 @@ Feature: Petstore API Tests
 
   @updatePetSoldPet  # Tag para el escenario de actualizar una mascota vendida
   Scenario Outline: Actualizar el nombre y el estado de una mascota a vendida "sold"
-    Given url urlBase + '/pet'
+    Given url urlBase + usersPath
     And header Content-Type = 'application/json'
     # Enviar todos los parámetros requeridos, no solo id, name y status, ojo debe recibir todos los parámetros que solicita la API
     # parametros requeridos en formato json: id, category, name, photoUrls, tags, status
@@ -81,7 +82,7 @@ Feature: Petstore API Tests
 
   @findByStatusPet  # Tag para el escenario de consultar una mascota por estado
   Scenario Outline: Consultar una mascota por estado
-    Given url urlBase + '/pet/' + <petId>
+    Given url urlBase + usersPath + '/' + <petId>
     When method get
     # el estado de la respuesta utilizando: Then status 200 o la columna statusCode
     Then status <statusCode>
